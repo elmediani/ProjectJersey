@@ -42,5 +42,13 @@ public class ProfesseurService {
 		return professeurDao.findProfesseurById(id);
 	}
 	
+	public Professeur updateProfesseur (Professeur professeur ) {
+		
+		Professeur prof = new Professeur();
+		prof.setId(professeur.getId());
+		prof.setMatiere(professeur.getMatiere());
+		prof.setNom(professeur.getNom());	 
+		return professeurDao.save(prof);		 
+	}
 	
 }

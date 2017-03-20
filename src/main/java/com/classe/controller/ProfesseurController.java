@@ -26,7 +26,7 @@ import com.classe.service.ProfesseurService;
 
 @Controller
 @Component
-@Path("professeur")
+@Path("profs")
 //@Produces(MediaType.APPLICATION_JSON)
 public class ProfesseurController {
 
@@ -41,21 +41,10 @@ public class ProfesseurController {
 	public void setProfesseurService(ProfesseurService professeurService) {
 		ProfesseurService = professeurService;
 	}
-
-
-	// Display Hello World
-	@GET
-	 @Path("/HelloWorld")
-	 @Produces({"application/json"})
-     public String getHelloWorld(){
-		
-		return "Hello World from Jersey";
-	}
 	
 	// get List Professeur
 	@GET
-	@Path("/listProfesseur")
-	@Produces({"application/json"})
+	@Produces(MediaType.APPLICATION_JSON)
     public List<Professeur> listProfesseur() {
 	 	return ProfesseurService.listProfesseur();
 	
@@ -64,68 +53,42 @@ public class ProfesseurController {
 	// GET Professeur by id
 	@GET
 	@Path("/{id}")
-	@Produces({"application/json"})
+	@Produces(MediaType.APPLICATION_JSON)
 	public Professeur findProfesseurById(@PathParam("id") int id) {
 		return ProfesseurService.findProfesseurById(id);		
 	}
-	
-	
-	// Save professeur WITH response
-	@POST
-	@Path("/saveProfesseur")
-	@Consumes({"application/json"})
-	public Response saveProfesseur (){ 
-	
-		Professeur professeur= new Professeur("Ouissal","Math");
-	    Professeur prof = ProfesseurService.saveProfesseur(professeur);		
 
-	    return Response.created(URI.create("http://localhost:8090/api/professeur/"+prof.getId()))
-					.build();
-	}
 		
+	
+	//Save professeur
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Professeur saveProfesseur (Professeur professeur){ 
+		   return ProfesseurService.saveProfesseur(professeur);
+	}
+	
 	// delete professeur WITH Response 
 	@DELETE
 	@Path("{id}")
-	public Response deleteProfesseur(@PathParam("id") int id) {
-		ProfesseurService.deleteProfesseur(id);
-	    return Response.accepted().build();
-	}
-	
-	// Update professeur by Id 
-//	@PUT
-//	@Path("/{id}")
-//	@Consumes(MediaType.APPLICATION_JSON)
-//	public Response updateProfesseur(@PathParam("id") int id) {
-//		
-//		
-//		Professeur professeur= new Professeur("Fatima-Zahra","Business");
-//
-//		Professeur prof =  ProfesseurService.findProfesseurById(id);
-//		prof.setMatiere(professeur.getMatiere());
-//		prof.setNom(professeur.getNom());
-//		
-//		ProfesseurService.saveProfesseur(prof);
-//								
-//		return Response.ok()
-//				.build();
-//		//Response.created(URI.create("http://localhost:8090/api/professeur/"+prof.getId())).build();
-//
-//	}
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public void deleteProfesseur (@PathParam("id") int id) {
+      ProfesseurService.deleteProfesseur(id);
+
+  }
+
 	
 	@PUT
 	@Path("/{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response update(@PathParam("id") int id, Professeur p) {
+	@Produces(MediaType.APPLICATION_JSON)
+
+	public Professeur update(@PathParam("id") int id , Professeur professeur) {
 		
-		Professeur prof =  ProfesseurService.findProfesseurById(id);
-		p.setId(id);
-		prof.setNom(p.getNom());
-		prof.setMatiere(p.getMatiere());
-		
-		ProfesseurService.saveProfesseur(p);
-		
-		return Response.ok()
-				.build();
+		professeur.setId(id);		
+		return ProfesseurService.updateProfesseur(professeur);
 		
 	} 
+	
 }

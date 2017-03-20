@@ -16,6 +16,7 @@ public interface ProfesseurDao extends CrudRepository<Professeur,Integer>{
 	//public  Professeur findAllByProfesseurNom (String nom);
 	Professeur findOne(int id);
 	Professeur findProfesseurById(int id);
+	//Professeur update (int id);
 
 }
 
